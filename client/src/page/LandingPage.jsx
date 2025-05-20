@@ -3,7 +3,7 @@ import React from 'react';
 export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#0f0f0f] to-[#1a1a1a] text-white font-sans">
-      
+
       {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center text-center py-24 px-6 sm:px-12 md:px-20 lg:px-32">
         <div className="absolute inset-0 bg-white/5 backdrop-blur-2xl rounded-b-3xl shadow-2xl z-0" />
@@ -60,6 +60,105 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="bg-white/5 py-20 px-6 sm:px-12 lg:px-32 rounded-3xl mx-6 sm:mx-12 lg:mx-32 mb-20 backdrop-blur-md shadow-lg">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-14 text-blue-400">
+          How It Works
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center text-gray-300">
+          <div>
+            <div className="text-5xl mb-4">👥</div>
+            <h3 className="text-xl font-semibold mb-2">Create or Join a Meeting</h3>
+            <p>Start instant meetings or schedule ahead to collaborate with your team or friends.</p>
+          </div>
+          <div>
+            <div className="text-5xl mb-4">📹</div>
+            <h3 className="text-xl font-semibold mb-2">Share Your Video & Screen</h3>
+            <p>Broadcast your video and share your screen for presentations or teamwork.</p>
+          </div>
+          <div>
+            <div className="text-5xl mb-4">🔒</div>
+            <h3 className="text-xl font-semibold mb-2">Secure & Private</h3>
+            <p>All meetings are encrypted end-to-end to keep your conversations confidential.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-6 sm:px-12 lg:px-32">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-14 text-white">
+          What Our Users Say
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-gray-300">
+          {[
+            {
+              name: 'Alice Johnson',
+              feedback: 'Zoom Clone has revolutionized how my team collaborates remotely. The quality and ease of use are unmatched!',
+              avatar: 'https://i.pravatar.cc/100?img=1',
+            },
+            {
+              name: 'Michael Lee',
+              feedback: 'The screen sharing and security features give me confidence to use Zoom Clone for all client meetings.',
+              avatar: 'https://i.pravatar.cc/100?img=2',
+            },
+            {
+              name: 'Samantha Smith',
+              feedback: 'I love the simple and clean interface. It just works perfectly for my online classes.',
+              avatar: 'https://i.pravatar.cc/100?img=3',
+            },
+          ].map(({ name, feedback, avatar }, idx) => (
+            <div
+              key={idx}
+              className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col items-center shadow-lg backdrop-blur-md"
+            >
+              <img
+                src={avatar}
+                alt={name}
+                className="w-20 h-20 rounded-full mb-4 border-2 border-blue-400"
+                loading="lazy"
+              />
+              <p className="italic mb-4 text-center">"{feedback}"</p>
+              <h4 className="font-semibold text-blue-300">{name}</h4>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Supported Platforms Section */}
+      <section className="py-20 px-6 sm:px-12 lg:px-32 bg-white/5 rounded-3xl mx-6 sm:mx-12 lg:mx-32 mb-20 backdrop-blur-md shadow-lg">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-14 text-blue-400">
+          Supported Platforms
+        </h2>
+        <div className="flex flex-wrap justify-center gap-12 text-gray-300 text-center">
+          <div className="flex flex-col items-center">
+            <span className="text-6xl mb-2">💻</span>
+            <span>Desktop (Windows, Mac, Linux)</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <span className="text-6xl mb-2">📱</span>
+            <span>Mobile (iOS, Android)</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <span className="text-6xl mb-2">🌐</span>
+            <span>Web Browser</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action Section */}
+      <section className="py-16 px-6 sm:px-12 lg:px-32 bg-gradient-to-r from-blue-600 to-blue-800 rounded-3xl mx-6 sm:mx-12 lg:mx-32 text-center text-white shadow-lg">
+        <h2 className="text-4xl font-bold mb-6">Ready to get started?</h2>
+        <p className="mb-8 text-lg max-w-2xl mx-auto">
+          Join thousands of users enjoying seamless and secure video calls. Sign up now and experience the future of communication!
+        </p>
+        <a
+          href="/signup"
+          className="inline-block bg-white text-blue-700 font-semibold py-3 px-10 rounded-lg shadow-lg hover:bg-gray-100 transition"
+        >
+          Create Your Account
+        </a>
       </section>
 
       {/* Footer */}
