@@ -2,6 +2,95 @@ import React from 'react';
 import axios from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  IconButton,
+  CircularProgress,
+  InputAdornment,
+} from '@mui/material';
+import {
+  ArrowBack as ArrowBackIcon,
+  Person as PersonIcon,
+  Email as EmailIcon,
+  Lock as LockIcon,
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+} from '@mui/icons-material';
+import TrackingBall from '../component/TrackingBall';
+import {
+  FloatingParticles,
+  AnimatedBorder,
+  AnimatedInput,
+  AnimatedButton,
+  AnimatedIcon,
+  AnimatedCheckmark,
+  AnimatedError,
+} from '../component/Animations';
+
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    y: 20,
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.6, -0.05, 0.01, 0.99],
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    transition: {
+      duration: 0.4,
+      ease: 'easeIn',
+    },
+  },
+};
+
+const formVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      delay: 0.2,
+      ease: [0.6, -0.05, 0.01, 0.99],
+    },
+  },
+};
+
+const inputVariants = {
+  focus: {
+    scale: 1.02,
+    transition: { duration: 0.2 },
+  },
+};
+
+const buttonVariants = {
+  hover: {
+    scale: 1.05,
+    boxShadow: '0 8px 20px rgba(107, 70, 193, 0.3)',
+    transition: {
+      duration: 0.3,
+      ease: 'easeOut',
+    },
+  },
+  tap: {
+    scale: 0.95,
+    transition: {
+      duration: 0.1,
+    },
+  },
+};
 
 export default function Signup() {
     const [name, setName] = React.useState('');
@@ -9,6 +98,7 @@ export default function Signup() {
     const [password, setPassword] = React.useState('');
     const [error, setError] = React.useState('');
     const [isSubmitting, setIsSubmitting] = React.useState(false);
+    const [showPassword, setShowPassword] = React.useState(false);
     const navigator = useNavigate();
 
     const validateForm = () => {
@@ -68,83 +158,309 @@ export default function Signup() {
         }
     };
 
-        const navigateToLanding = () => {
+    const navigateToLanding = () => {
         navigator('/');
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0f0f] to-[#1a1a1a] px-4 py-8 relative text-white font-sans">
+        <Box
+            component={motion.div}
+            variants={pageVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            sx={{
+                minHeight: '100dvh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                px: { xs: 2, sm: 4 },
+                py: 4,
+                position: 'relative',
+                background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+                overflow: 'hidden',
+                width: '100%',
+            }}
+        >
+            <TrackingBall />
+            <FloatingParticles />
 
-            {/* Go Back Button */}
-            <button
+            <IconButton
+                component={motion.button}
+                whileHover={{ scale: 1.1, rotate: -5 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={navigateToLanding}
-                className="absolute top-4 left-4 text-blue-400 hover:underline text-sm tracking-wide"
+                sx={{
+                    position: 'absolute',
+                    top: 16,
+                    left: 16,
+                    color: '#FFFFFF',
+                    '&:hover': {
+                        color: '#F1F5F9',
+                    },
+                }}
             >
-                ← Go to Landing Page
-            </button>
-            
-            <div className="w-full max-w-lg p-10 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-white">
-                <h1 className="text-3xl font-extrabold text-center mb-6 tracking-tight">
-                    Create Your Account
-                </h1>
-                <p className="text-center text-sm text-gray-400 mb-6">Sign up to get started</p>
+                <AnimatedIcon>
+                <ArrowBackIcon />
+                </AnimatedIcon>
+            </IconButton>
 
-                {/* Error message */}
-                {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                        <label htmlFor="name" className="block text-sm text-gray-300 mb-1">Full Name</label>
-                        <input
-                            onChange={(e) => setName(e.target.value)}
-                            value={name}
-                            required
-                            type="text"
-                            id="name"
-                            className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="John Doe"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="email" className="block text-sm text-gray-300 mb-1">Email Address</label>
-                        <input
-                            onChange={(e) => setEmail(e.target.value)}
-                            value={email}
-                            required
-                            type="email"
-                            id="email"
-                            className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="you@example.com"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="password" className="block text-sm text-gray-300 mb-1">Password</label>
-                        <input
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
-                            required
-                            type="password"
-                            id="password"
-                            className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="••••••••"
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className={`w-full py-2 bg-blue-500/20 text-blue-300 border border-blue-400/30 hover:bg-blue-500/30 hover:text-white rounded-lg transition duration-300 shadow-lg hover:shadow-blue-500/30 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+            <AnimatedBorder>
+            <Paper
+                component={motion.div}
+                variants={formVariants}
+                initial="initial"
+                animate="animate"
+                sx={{
+                    p: { xs: 3, sm: 4 },
+                    maxWidth: 400,
+                    width: '100%',
+                    backdropFilter: 'blur(20px)',
+                    backgroundColor: 'rgba(26, 26, 46, 0.8)',
+                    border: '1px solid rgba(107, 70, 193, 0.3)',
+                    borderRadius: '24px',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                    mx: 2,
+                }}
+            >
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                    <Typography
+                        variant="h4"
+                        component="h1"
+                        align="center"
+                        gutterBottom
+                        sx={{
+                            fontWeight: 'bold',
+                            mb: 1,
+                            background: 'linear-gradient(45deg, #FFFFFF, #F1F5F9)',
+                            backgroundClip: 'text',
+                            textFillColor: 'transparent',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                        }}
                     >
-                        {isSubmitting ? 'Creating Account...' : 'Create Account'}
-                    </button>
-                </form>
+                        Create Account
+                    </Typography>
 
-                <p className="mt-6 text-sm text-center text-gray-400">
-                    Already have an account?{' '}
-                    <a href="/login" className="text-blue-400 hover:underline">
-                        Log in
-                    </a>
-                </p>
-            </div>
-        </div>
+                    <Typography
+                        variant="subtitle1"
+                        align="center"
+                        sx={{
+                            mb: 4,
+                            color: '#E2E8F0',
+                        }}
+                    >
+                        Join us and start your journey
+                    </Typography>
+                </motion.div>
+
+                <AnimatePresence>
+                    {error && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+                                    <AnimatedError />
+                                    <Typography color="error" align="center" sx={{ ml: 1 }}>
+                                {error}
+                            </Typography>
+                                </Box>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                <form onSubmit={handleSubmit}>
+                        <AnimatedInput>
+                        <TextField
+                            fullWidth
+                            label="Full Name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                            <AnimatedIcon>
+                                        <PersonIcon sx={{ color: 'rgba(203, 213, 225, 0.7)' }} />
+                                            </AnimatedIcon>
+                                    </InputAdornment>
+                                ),
+                            }}
+                            sx={{
+                                mb: 3,
+                                '& .MuiOutlinedInput-root': {
+                                    color: '#FFFFFF',
+                                    '& fieldset': {
+                                        borderColor: 'rgba(107, 70, 193, 0.3)',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'rgba(107, 70, 193, 0.5)',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#6b46c1',
+                                    },
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: 'rgba(203, 213, 225, 0.7)',
+                                },
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: '#b794f4',
+                                },
+                            }}
+                        />
+                        </AnimatedInput>
+
+                        <AnimatedInput>
+                        <TextField
+                            fullWidth
+                            label="Email Address"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                            <AnimatedIcon>
+                                        <EmailIcon sx={{ color: 'rgba(203, 213, 225, 0.7)' }} />
+                                            </AnimatedIcon>
+                                    </InputAdornment>
+                                ),
+                            }}
+                            sx={{
+                                mb: 3,
+                                '& .MuiOutlinedInput-root': {
+                                    color: '#FFFFFF',
+                                    '& fieldset': {
+                                        borderColor: 'rgba(107, 70, 193, 0.3)',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'rgba(107, 70, 193, 0.5)',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#6b46c1',
+                                    },
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: 'rgba(203, 213, 225, 0.7)',
+                                },
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: '#b794f4',
+                                },
+                            }}
+                        />
+                        </AnimatedInput>
+
+                        <AnimatedInput>
+                        <TextField
+                            fullWidth
+                            label="Password"
+                            type={showPassword ? 'text' : 'password'}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                            <AnimatedIcon>
+                                        <LockIcon sx={{ color: 'rgba(203, 213, 225, 0.7)' }} />
+                                            </AnimatedIcon>
+                                    </InputAdornment>
+                                ),
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            edge="end"
+                                            sx={{ color: 'rgba(203, 213, 225, 0.7)' }}
+                                        >
+                                            {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                            sx={{
+                                mb: 3,
+                                '& .MuiOutlinedInput-root': {
+                                    color: '#FFFFFF',
+                                    '& fieldset': {
+                                        borderColor: 'rgba(107, 70, 193, 0.3)',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'rgba(107, 70, 193, 0.5)',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#6b46c1',
+                                    },
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: 'rgba(203, 213, 225, 0.7)',
+                                },
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: '#b794f4',
+                                },
+                            }}
+                        />
+                        </AnimatedInput>
+
+                        <AnimatedButton>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            disabled={isSubmitting}
+                            sx={{
+                                py: 1.5,
+                                mb: 2,
+                                background: 'linear-gradient(45deg, #6b46c1, #b794f4)',
+                                color: '#FFFFFF',
+                                borderRadius: '12px',
+                                textTransform: 'none',
+                                fontSize: '1.1rem',
+                                fontWeight: 600,
+                                '&:hover': {
+                                    background: 'linear-gradient(45deg, #553c9a, #9f7aea)',
+                                    boxShadow: '0 8px 20px rgba(107, 70, 193, 0.4)',
+                                },
+                            }}
+                        >
+                            {isSubmitting ? (
+                                <CircularProgress size={24} color="inherit" />
+                            ) : (
+                                'Create Account'
+                            )}
+                        </Button>
+                        </AnimatedButton>
+
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                    >
+                        <Typography align="center" sx={{ color: '#CBD5E1' }}>
+                            Already have an account?{' '}
+                            <Button
+                                onClick={() => navigator('/login')}
+                                sx={{
+                                    color: '#b794f4',
+                                    fontWeight: 600,
+                                    '&:hover': {
+                                        color: '#9f7aea',
+                                        background: 'rgba(107, 70, 193, 0.1)',
+                                    },
+                                }}
+                            >
+                                Log in
+                            </Button>
+                        </Typography>
+                    </motion.div>
+                </form>
+            </Paper>
+            </AnimatedBorder>
+        </Box>
     );
 }

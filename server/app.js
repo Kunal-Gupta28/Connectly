@@ -16,6 +16,4 @@ app.use('/api/user',userRouter)
 
 
 
-app.listen(port,()=>{
-    console.log("Server is running on Port:",port)
-})
+module.exports = app
