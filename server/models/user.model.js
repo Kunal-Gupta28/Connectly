@@ -4,9 +4,19 @@ const jwt = require('jsonwebtoken');
 
 // Define user schema
 const userSchema = new mongoose.Schema({
-  name: {
+  firstName: {
     type: String,
     required: true,
+    trim: true,
+    minlength: 2,
+    maxlength: 50,
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 2,
+    maxlength: 50,
   },
   email: {
     type: String,
@@ -21,6 +31,55 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  avatar: {
+    type: String,
+    default: '',
+  },
+  phone: {
+    type: String,
+    default: '',
+    match: [/^\+?[\d\s-]{10,}$/, 'Please provide a valid phone number'],
+  },
+  language: {
+    type: String,
+    enum: ['en', 'es', 'fr'],
+    default: 'en',
+  },
+  theme: {
+    type: String,
+    enum: ['light', 'dark', 'system'],
+    default: 'dark',
+  },
+  settings: {
+    emailNotifications: {
+      type: Boolean,
+      default: true,
+    },
+    pushNotifications: {
+      type: Boolean,
+      default: true,
+    },
+    twoFactorAuth: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  bio: {
+    type: String,
+    default: '',
+    maxlength: 500,
+  },
+  location: {
+    type: String,
+    default: '',
+    maxlength: 100,
+  },
+  timezone: {
+    type: String,
+    default: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  },
+}, {
+  timestamps: true, // Adds createdAt and updatedAt fields
 });
 
 
